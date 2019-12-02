@@ -91,7 +91,7 @@ class TabsMainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (!searchView?.isIconified()!!) {
             searchView?.setIconified(true);
-            return;
+            return
         }
         super.onBackPressed()
     }
