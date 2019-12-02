@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: "kotlin-kapt"
+android {
+    def globalConfigurations = rootProject.getExtensions().getByName("ext")
+    compileSdkVersion globalConfigurations["androidComileSdkVersion"]
+    buildToolsVersion globalConfigurations["androidBuildToolsVersion"]
+}
+
+kapt {
+    correctErrorTypes = true
+    generateStubs = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+
+    def cacheDependencies = rootProject.ext.cacheDependencies
+
+    implementation cacheDependencies.rxKotlin
+    implementation cacheDependencies.kotlin
+    implementation cacheDependencies.javaxAnnotation
+    implementation cacheDependencies.androidAnnotations
+    implementation cacheDependencies.roomRuntime
+//    implementation cacheDependencies.roomKTX
+    implementation (cacheDependencies.roomRxJava){
+        exclude group: 'io.reactivex.rxjava2'
+    }
+    implementation cacheDependencies.koinAndroid
+    implementation cacheDependencies.gson
+    implementation project(':DataDistrbuter')
+
+    kapt cacheDependencies.roomCompiler
+
+}

@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+android {
+    def globalConfigurations = rootProject.getExtensions().getByName("ext")
+
+    compileSdkVersion globalConfigurations["androidComileSdkVersion"]
+    buildToolsVersion globalConfigurations["androidBuildToolsVersion"]
+
+    defaultConfig{
+        minSdkVersion globalConfigurations["androidMinSdkVersion"]
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+
+}
+kapt {
+    correctErrorTypes = true
+    generateStubs = true
+}
+
+dependencies {
+    implementation project(':Cache')
+    implementation project(':DataDistrbuter')
+    implementation project(':Remote')
+    implementation project(':UseCase')
+def presentationDep =rootProject.ext.presenterDependencies
+
+    implementation presentationDep.rxKotlin
+    implementation presentationDep.rxAndroid
+    implementation presentationDep.kotlin
+    implementation presentationDep.koinAndroid
+    implementation presentationDep.koinScope
+    implementation presentationDep.koinViewModel
+    implementation presentationDep.retrofit
+    implementation presentationDep.lifecycleRuntime
+    implementation presentationDep.lifecycleExtensions
+    implementation presentationDep.kotlinExtentions
+    implementation presentationDep.lifecycleViewModel
+    implementation presentationDep.lifecycleLiveData
+    implementation presentationDep.lifecycleLiveDataCore
+//    kapt presentationDep.lifecycleCompiler
+
+}

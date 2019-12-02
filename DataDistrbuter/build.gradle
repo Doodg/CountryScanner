@@ -1,0 +1,14 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def dataDependencies = rootProject.ext.DataDependancies
+
+    implementation dataDependencies.rxKotlin
+    implementation dataDependencies.kotlin
+    implementation dataDependencies.koinScope
+    implementation dataDependencies.gson
+
+    implementation project(':UseCase')
+}
+

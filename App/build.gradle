@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    def globalConfigurations = rootProject.getExtensions().getByName("ext")
+    compileSdkVersion globalConfigurations["androidComileSdkVersion"]
+    buildToolsVersion globalConfigurations["androidBuildToolsVersion"]
+    defaultConfig {
+        applicationId "com.enigma.countryscanner"
+        minSdkVersion globalConfigurations["androidMinSdkVersion"]
+        targetSdkVersion globalConfigurations["androidTargetSdkVersion"]
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+allprojects {
+
+
+    configurations.all {
+        def presentationDependencies = rootProject.ext.presenterDependencies
+
+
+        resolutionStrategy.force presentationDependencies.archRunTime
+        resolutionStrategy.force presentationDependencies.lifecycleRuntime
+        resolutionStrategy.force presentationDependencies.lifecycleViewModel
+        resolutionStrategy.force presentationDependencies.lifecycleExtensions
+        resolutionStrategy.force presentationDependencies.lifecycleLiveData
+        resolutionStrategy.force presentationDependencies.lifecycleLiveDataCore
+
+
+    }
+
+}
+dependencies {
+    implementation project(':Cache')
+    implementation project(':DataDistrbuter')
+    implementation project(':Remote')
+    implementation project(':UseCase')
+    implementation project(':Presentation')
+
+    def mobileUiDependencies = rootProject.ext.UiDependancies
+
+    implementation mobileUiDependencies.rxKotlin
+    implementation mobileUiDependencies.kotlin
+    implementation mobileUiDependencies.koinAndroid
+    implementation mobileUiDependencies.koinScope
+    implementation mobileUiDependencies.koinViewModel
+    implementation mobileUiDependencies.androidSupport7
+    implementation mobileUiDependencies.supprotDesign
+    implementation mobileUiDependencies.constraintLayout
+    implementation mobileUiDependencies.stetho
+    implementation mobileUiDependencies.glideImage
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+}

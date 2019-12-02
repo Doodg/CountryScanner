@@ -1,0 +1,11 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def useCaseDependancies = rootProject.ext.DomainDependancies
+    implementation useCaseDependancies.kotlin
+    implementation useCaseDependancies.rxKotlin
+    implementation useCaseDependancies.koinScope
+}
+
+

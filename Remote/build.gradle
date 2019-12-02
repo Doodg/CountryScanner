@@ -1,0 +1,16 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    def remoteDependancies = rootProject.ext.remoteDependencies
+    implementation remoteDependancies.gson
+    implementation remoteDependancies.retrofitGsonConverter
+    implementation remoteDependancies.rxKotlin
+    implementation remoteDependancies.kotlin
+    implementation remoteDependancies.retrofit
+    implementation remoteDependancies.retrofitAdapter
+    implementation remoteDependancies.okHttp
+    implementation remoteDependancies.okHttpIntercept
+    implementation remoteDependancies.koinScope
+    implementation project(':DataDistrbuter')
+
+}

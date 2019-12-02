@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">CountryScanner</string>
+    <string name="country">countryName</string>
+    <string name="country_native_name">مصر</string>
+    <string name="country_flag_image_desc">Country Flag</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="remove_favourite">UnFavourite</string>
+    <string name="country_name">CountryName: %s</string>
+    <string name="capital_name">Capital: %s</string>
+    <string name="country_population">Population: %d</string>
+    <string name="continent_name">Continent: %s</string>
+    <string name="country_in_region">Region: %s</string>
+    <string name="add_favourite">Add to favourites</string>
+    <string name="country_bio">Country bio</string>
+    <string name="title_tabs_activity_main">TabsMainActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="favourite_countries">Favorites</string>
+    <string name="countries">Countries</string>
+    <string name="search">Search</string>
+    <string name="share">Share it</string>
+    <string name="find_out">I found a lot of info about</string>
+    <string name="country_name_share"><b>%s</b>Country</string>
+    <string name="here_you_can_check_it">here you can check it</string>
+    <string name="remove_from_favourite">Unfavourite</string>
+    <string name="country_currency">Currencies: %s</string>
+    <string name="country_calling_code">Code: %s</string>
+    <string name="country_time_zone">TimeZone: %s</string>
+    <string name="no_favourite_added">No Favourites added yet</string>
+    <string name="error_occurred">Error occurred</string>
+    <string name="read_more">Read More</string>
+    <string name="something_went_wrong">Ops, something went wrong</string>
+    <string name="search_hint">Search</string>
+
+
+</resources>
