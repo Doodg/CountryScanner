@@ -2,6 +2,7 @@ package com.enigma.remote
 
 import com.enigma.datadistrbuter.model.CountryResponseEntity
 import com.enigma.datadistrbuter.repositry.CountryRemote
+import com.enigma.remote.extension.adaptExceptionError
 import com.enigma.remote.modelmapper.CountryResponseMapper
 import com.enigma.remote.retrofit.CountriesService
 import io.reactivex.Observable
@@ -16,7 +17,7 @@ class CountryRemoteImpl(
                 countryResponseMapper.mapFromRemoteToData(it)
 
             }
-        }
+        }.adaptExceptionError()
     }
 
 }

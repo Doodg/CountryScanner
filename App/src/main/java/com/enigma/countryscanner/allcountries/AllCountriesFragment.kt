@@ -1,6 +1,5 @@
 package com.enigma.countryscanner.allcountries
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.enigma.countryscanner.biodialog.CountryBioFragment
 import com.enigma.countryscanner.R
+import com.enigma.countryscanner.extension.hide
+import com.enigma.countryscanner.extension.show
 import com.enigma.presentation.Resource
 import com.enigma.presentation.model.CountryResponsePresentation
 import com.enigma.presentation.viewmodel.CountriesViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.enigma.remote.retrofit.errortype.NetworkException
 import kotlinx.android.synthetic.main.fragment_all_countries.*
 import org.koin.android.ext.android.inject
 
@@ -34,6 +35,7 @@ class AllCountriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         allCountriesAdapter = AllCountriesAdapter(::onCountryItemSelect, ::onItemFavouriteClicked)
+
         initViews()
         requestExecute()
         initObservers()
@@ -44,16 +46,27 @@ class AllCountriesFragment : Fragment() {
             when (resource?.state) {
                 Resource.State.LOADING -> {
                     swipeToRefresh.isRefreshing = true
+                    textViewSwipetToLoadData.hide()
+                    recyclerViewAllCountries.hide()
+
                 }
                 Resource.State.SUCCESS -> {
+                    recyclerViewAllCountries.show()
                     swipeToRefresh.isRefreshing = false
                     swipeToRefresh.isEnabled = false
                     resource.values?.let { allCountriesAdapter.items.addAll(it) }
                     allCountriesAdapter.notifyDataSetChanged()
+                    textViewSwipetToLoadData.hide()
 
                 }
                 Resource.State.ERROR -> {
-                    Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
+                    if (resource.throwable is NetworkException)
+                        Toast.makeText(context, R.string.check_internet_connection, Toast.LENGTH_LONG).show()
+                    else
+                        Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
+
+                    textViewSwipetToLoadData.show()
+                    recyclerViewAllCountries.hide()
                     swipeToRefresh.isRefreshing = false
 
                 }
@@ -90,7 +103,6 @@ class AllCountriesFragment : Fragment() {
         countriesViewModel.markAsFavourite(country)
         allCountriesAdapter.notifyItemChanged(position, country)
     }
-
 
     companion object {
         fun newInstance() = AllCountriesFragment()

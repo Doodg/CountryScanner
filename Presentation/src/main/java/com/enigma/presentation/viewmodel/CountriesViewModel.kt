@@ -35,7 +35,6 @@ class CountriesViewModel(
                         .mapFromUseCaseToPresentationModel(it) })
         }
         override fun onError(e: Throwable) {
-            e.printStackTrace()
             countriesMutableLiveData.postValue(Resource.error(e))
         }
     }

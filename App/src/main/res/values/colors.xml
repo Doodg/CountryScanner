@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="textBlack">#000000</color>
     <color name="lightGrey">#d8d8d8</color>
+    <color name="blackGrey">#B8B8B8</color>
     <color name="whiteGrey">#d8d8d8</color>
     <color name="colorRed">#ff0011</color>
     <color name="colorWhite">#ffffff</color>
