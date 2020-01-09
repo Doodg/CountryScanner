@@ -1,6 +1,6 @@
 # CountryScanner
 
-CountryScanner is an example android app created for learning proposes, for applying clean architecture using the latest trading technology stack in android.
+CountryScanner is an example android app created for learning proposes, for applying <b>clean architecture</b> using the latest trading technology stack in android.
 
 ## App Idea
 the application is to retrieve the Countries in the whole world using the API below:-
@@ -9,11 +9,12 @@ https://restcountries-v1.p.rapidapi.com/all
 ```
 also, you can save the country as a favorite in local Database with some info about in when clicking on the country kindly check the GIF below to check out how the app work 
 
-
+![](https://i.imgur.com/umS73dZ.gif)
 
 ## Stack
 
-- MVVM architecture pattern
+- Clean Architecture
+- MVVM 
 - KOIN
 - Retrofit
 - Android architecture component
