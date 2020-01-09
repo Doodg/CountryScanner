@@ -21,7 +21,7 @@ object RetrofitClient : KoinComponent {
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
-    private fun getOkHttpClient(): OkHttpClient? {
+    private fun getOkHttpClient(): OkHttpClient {
         val interceptorBody = HttpLoggingInterceptor()
         interceptorBody.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder()
