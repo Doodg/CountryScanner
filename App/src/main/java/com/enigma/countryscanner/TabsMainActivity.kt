@@ -54,12 +54,19 @@ class TabsMainActivity : AppCompatActivity() {
         })
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if (viewPagerContainer.currentItem != 0)
-            menu?.findItem(R.id.action_search)?.isVisible = false
-        else
-            menu?.findItem(R.id.action_search)?.isVisible = true
+    fun hideSoftKeyBoard() {
+        if (currentFocus != null)
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow((currentFocus).windowToken, 0)
+    }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        if (viewPagerContainer.currentItem != 0) {
+            menu?.findItem(R.id.action_search)?.isVisible = false
+            hideSoftKeyBoard()
+        } else {
+            menu?.findItem(R.id.action_search)?.isVisible = true
+        }
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -72,8 +79,7 @@ class TabsMainActivity : AppCompatActivity() {
         searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                    .hideSoftInputFromWindow((currentFocus).windowToken, 0)
+                hideSoftKeyBoard()
                 return true
 
             }
