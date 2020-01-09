@@ -9,8 +9,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import com.enigma.countryscanner.allcountries.AllCountriesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -18,6 +21,9 @@ class TabsMainActivity : AppCompatActivity() {
     private var searchView: SearchView? = null
 
     lateinit var mSectionsPagerAdapter: HomeSectionsPagerAdapter
+    val fragmentAllCountries: AllCountriesFragment by lazy {
+        mSectionsPagerAdapter.getItem(0) as AllCountriesFragment
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +40,6 @@ class TabsMainActivity : AppCompatActivity() {
             )
         )
         tabsLayout.setupWithViewPager(viewPagerContainer)
-
         tabsLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 viewPagerContainer.currentItem = tab?.position!!
@@ -51,9 +56,9 @@ class TabsMainActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         if (viewPagerContainer.currentItem != 0)
-            menu?.findItem(R.id.action_search)?.isVisible=false
+            menu?.findItem(R.id.action_search)?.isVisible = false
         else
-            menu?.findItem(R.id.action_search)?.isVisible=true
+            menu?.findItem(R.id.action_search)?.isVisible = true
 
         return super.onPrepareOptionsMenu(menu)
     }
@@ -67,13 +72,14 @@ class TabsMainActivity : AppCompatActivity() {
         searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(this@TabsMainActivity,"onQueryTextSubmit to Do",Toast.LENGTH_SHORT).show()
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                    .hideSoftInputFromWindow((currentFocus).windowToken, 0)
                 return true
 
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Toast.makeText(this@TabsMainActivity,"onQueryTextChange to Do",Toast.LENGTH_SHORT).show()
+                newText?.let { fragmentAllCountries.searchQuery(it) }
                 return false
             }
         })

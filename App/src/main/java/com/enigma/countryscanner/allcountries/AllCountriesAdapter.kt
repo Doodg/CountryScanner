@@ -16,9 +16,10 @@ class AllCountriesAdapter(
     private val onItemCountryClicked: (position: Int, country: CountryResponsePresentation) -> Unit,
     private val onItemFavoriteItemClicked: (position: Int, country: CountryResponsePresentation, isFavourite: Boolean) -> Unit
 ) : RecyclerView.Adapter<AllCountriesAdapter.ViewHolder>(), Filterable {
-    var items = ArrayList<CountryResponsePresentation>()
+    private var countryItems = ArrayList<CountryResponsePresentation>()
+    var unFilterCountries = ArrayList<CountryResponsePresentation>()
     private var mLastClickTime: Long = 0
-    private var countryFiltered: List<CountryResponsePresentation>? = null
+    private var filteredCountries: List<CountryResponsePresentation>? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,27 +28,31 @@ class AllCountriesAdapter(
         return ViewHolder(view)
     }
 
+    fun setAllCountries(items :ArrayList<CountryResponsePresentation>){
+        countryItems.addAll(items)
+        unFilterCountries.addAll(items)
+    }
     override fun getItemCount(): Int {
-        return items.size
+        return countryItems.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (!items.isNullOrEmpty()) {
-            holder.bindItem(items.get(position))
+        if (!countryItems.isNullOrEmpty()) {
+            holder.bindItem(countryItems.get(position))
             holder.itemView.setOnClickListener {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) return@setOnClickListener;
 
-                onItemCountryClicked(position, items.get(position))
+                onItemCountryClicked(position, countryItems.get(position))
                 mLastClickTime = SystemClock.elapsedRealtime()
             }
             holder.itemView.imageViewIconStar.setOnClickListener {
                 onItemFavoriteItemClicked(
                     position,
-                    items.get(position),
-                    !items.get(position).isFavourite
+                    countryItems.get(position),
+                    !countryItems.get(position).isFavourite
                 )
             }
-            if (!items.get(position).isFavourite) {
+            if (!countryItems.get(position).isFavourite) {
                 holder.itemView.imageViewIconStar.setImageResource(R.drawable.icon_favourite_outline_ff_7900)
             } else {
                 holder.itemView.imageViewIconStar.setImageResource(R.drawable.icon_favourite_filled_ff_7900)
@@ -78,31 +83,32 @@ class AllCountriesAdapter(
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
-                if (charString.isEmpty()) {
-                    countryFiltered = items
+                if (charString.isEmpty() || charString.length < 2) {
+                    filteredCountries = unFilterCountries
                 } else {
-                    var filteredList = ArrayList<CountryResponsePresentation>()
-                    for (row in items) {
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-                        if (row.name?.toLowerCase()?.contains(charString.toLowerCase())!! || row.nativeName?.contains(charSequence)!!) {
+                    val filteredList = ArrayList<CountryResponsePresentation>()
+                    for (row in countryItems) {
+                        if (row.name?.toLowerCase()?.contains(charString.toLowerCase())!! || row.nativeName?.contains(
+                                charSequence
+                            )!!
+                        ) {
                             filteredList.add(row)
                         }
                     }
 
-                    countryFiltered = filteredList
+                    filteredCountries = filteredList
                 }
 
                 val filterResults = FilterResults()
-                filterResults.values = countryFiltered
+                filterResults.values = filteredCountries
                 return filterResults
             }
 
             override
             fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-                countryFiltered = filterResults.values as ArrayList<CountryResponsePresentation>
-
-                // refresh the list with filtered data
+                filteredCountries = filterResults.values as ArrayList<CountryResponsePresentation>
+                countryItems.clear()
+                countryItems.addAll(filteredCountries as ArrayList<CountryResponsePresentation>)
                 notifyDataSetChanged()
             }
         }

@@ -8,25 +8,34 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.enigma.countryscanner.allcountries.AllCountriesFragment
 import com.enigma.countryscanner.favoritecountries.FavoriteCountriesFragment
 
-class HomeSectionsPagerAdapter(private val context: Context, fragment: FragmentManager) : FragmentStatePagerAdapter(
-    fragment,
-    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-) {
+class HomeSectionsPagerAdapter(private val context: Context, fragment: FragmentManager) :
+    FragmentStatePagerAdapter(
+        fragment,
+        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+    ) {
+    private val items = ArrayList<Fragment>()
+
+    init {
+        items.add(AllCountriesFragment.newInstance())
+        items.add(FavoriteCountriesFragment.newInstance())
+
+    }
+
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                AllCountriesFragment.newInstance()
+                items.get(position)
             }
             1 -> {
-                FavoriteCountriesFragment.newInstance()
+                items.get(position)
             }
-            else -> AllCountriesFragment.newInstance()
+            else -> items.get(0)
 
         }
     }
 
     override fun getCount(): Int {
-        return 2
+        return items.size
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

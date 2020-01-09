@@ -54,16 +54,24 @@ class AllCountriesFragment : Fragment() {
                     recyclerViewAllCountries.show()
                     swipeToRefresh.isRefreshing = false
                     swipeToRefresh.isEnabled = false
-                    resource.values?.let { allCountriesAdapter.items.addAll(it) }
+                    allCountriesAdapter.setAllCountries(resource.values as ArrayList<CountryResponsePresentation>)
                     allCountriesAdapter.notifyDataSetChanged()
                     textViewSwipetToLoadData.hide()
 
                 }
                 Resource.State.ERROR -> {
                     if (resource.throwable is NetworkException)
-                        Toast.makeText(context, R.string.check_internet_connection, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            R.string.check_internet_connection,
+                            Toast.LENGTH_LONG
+                        ).show()
                     else
-                        Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            R.string.something_went_wrong,
+                            Toast.LENGTH_LONG
+                        ).show()
 
                     textViewSwipetToLoadData.show()
                     recyclerViewAllCountries.hide()
@@ -102,6 +110,10 @@ class AllCountriesFragment : Fragment() {
         country.isFavourite = isFavourite
         countriesViewModel.markAsFavourite(country)
         allCountriesAdapter.notifyItemChanged(position, country)
+    }
+
+     fun searchQuery(countryQuery: String) {
+        allCountriesAdapter.filter.filter(countryQuery)
     }
 
     companion object {
